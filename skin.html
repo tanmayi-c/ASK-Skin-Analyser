@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASK Skin Analyser</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4EFE4;--card:#FFFDF8;--ink:#1F3560;--mute:#50648E;--accent:#35538F;--accent-ink:#FFFFFF;--line:#C3CCE0;--tint:#E3E8F2;--warm:#9DB4E0;--sun:#DCE4F3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101B33;--card:#172644;--ink:#E6ECF8;--mute:#9DB0D6;--accent:#8FB0F0;--accent-ink:#101B33;--line:#2A3C66;--tint:#1E2F54;--warm:#4A639B;--sun:#1E2F54}}
+:root[data-theme="dark"]{--bg:#101B33;--card:#172644;--ink:#E6ECF8;--mute:#9DB0D6;--accent:#8FB0F0;--accent-ink:#101B33;--line:#2A3C66;--tint:#1E2F54;--warm:#4A639B;--sun:#1E2F54}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;min-height:100vh}
+main{max-width:620px;margin:0 auto;padding:28px 20px 48px}
+.brand{font-weight:800;font-size:1.1rem;letter-spacing:.02em;margin-bottom:36px}
+.brand span{color:var(--accent)}
+h1{font-size:clamp(2.2rem,8vw,3.4rem);line-height:1.05;font-weight:800;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:1.5rem;line-height:1.25;margin:0 0 20px;font-weight:600}
+p.lead{color:var(--mute);font-size:1.05rem;max-width:46ch;margin:0 0 28px}
+label{display:block;font-weight:600;margin-bottom:8px}
+input[type=text]{width:100%;font:inherit;padding:14px 16px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+input[type=text]:focus{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:14px 26px;font-weight:600;margin-top:18px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.opt:focus-visible,.link:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.link{background:none;border:0;color:var(--mute);text-decoration:underline;padding:10px 0;margin-top:10px}
+.bar{height:6px;background:var(--tint);border-radius:3px;margin-bottom:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.count{color:var(--mute);font-size:.9rem;margin-bottom:22px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:10px;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed=true]{border-color:var(--accent);background:var(--tint)}
+.type{display:inline-block;background:var(--tint);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-weight:600;font-size:.9rem;margin-bottom:12px}
+.mix{color:var(--mute);margin:0 0 26px}
+.prod{background:var(--card);border-left:6px solid var(--accent);border-radius:4px 12px 12px 4px;padding:14px 18px;margin-bottom:12px}
+.prod h3{margin:0 0 2px;font-size:1.05rem}
+.prod .k{color:var(--accent);font-weight:600;font-size:.95rem}
+.prod p{margin:6px 0 0;color:var(--mute);font-size:.95rem}
+.note{font-size:.85rem;color:var(--mute);margin-top:26px}
+.hide{display:none}
+:root{--sand:#E9DFC9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sand:#4A4533}}
+:root[data-theme="dark"]{--sand:#4A4533}
+.boat{display:block;width:150px;margin:34px 0 0;animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px) rotate(-2deg)}}
+.shore{margin:0;line-height:0}
+.shore svg{display:block;width:100%;height:70px}
+.sand{height:26px;background:var(--sand)}
+body::before{content:"";position:fixed;inset:0;background:var(--accent);opacity:.16;z-index:-1;pointer-events:none;-webkit-mask-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g transform='translate(18 22)'><g fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'><path id='a' d='M0 30Q-6-2 20-4Q46-2 40 30Z'/><path d='M20 30L2 14M20 30L10 4M20 30V-2M20 30L30 4M20 30L38 14' fill='none'/></g></g><polygon points='140,28 145.3,44.7 162.8,44.6 148.6,54.8 154.1,71.4 140,61 125.9,71.4 131.4,54.8 117.2,44.6 134.7,44.7' fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'/><g transform='translate(120 120) rotate(-25)'><g fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'><path id='a' d='M0 30Q-6-2 20-4Q46-2 40 30Z'/><path d='M20 30L2 14M20 30L10 4M20 30V-2M20 30L30 4M20 30L38 14' fill='none'/></g></g><g transform='translate(50 150) scale(.75)'><polygon points='0,-24 5.3,-7.3 22.8,-7.4 8.6,2.8 14.1,19.4 0,9 -14.1,19.4 -8.6,2.8 -22.8,-7.4 -5.3,-7.3' fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'/></g><g fill='none' stroke='%23000' stroke-width='2'><circle cx='90' cy='20' r='3'/><circle cx='100' cy='95' r='2'/><circle cx='15' cy='100' r='3'/><circle cx='185' cy='140' r='3'/><circle cx='80' cy='190' r='2'/><circle cx='170' cy='20' r='2'/></g></svg>");mask-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g transform='translate(18 22)'><g fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'><path id='a' d='M0 30Q-6-2 20-4Q46-2 40 30Z'/><path d='M20 30L2 14M20 30L10 4M20 30V-2M20 30L30 4M20 30L38 14' fill='none'/></g></g><polygon points='140,28 145.3,44.7 162.8,44.6 148.6,54.8 154.1,71.4 140,61 125.9,71.4 131.4,54.8 117.2,44.6 134.7,44.7' fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'/><g transform='translate(120 120) rotate(-25)'><g fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'><path id='a' d='M0 30Q-6-2 20-4Q46-2 40 30Z'/><path d='M20 30L2 14M20 30L10 4M20 30V-2M20 30L30 4M20 30L38 14' fill='none'/></g></g><g transform='translate(50 150) scale(.75)'><polygon points='0,-24 5.3,-7.3 22.8,-7.4 8.6,2.8 14.1,19.4 0,9 -14.1,19.4 -8.6,2.8 -22.8,-7.4 -5.3,-7.3' fill='%23000' fill-opacity='.25' stroke='%23000' stroke-width='2' stroke-linejoin='round'/></g><g fill='none' stroke='%23000' stroke-width='2'><circle cx='90' cy='20' r='3'/><circle cx='100' cy='95' r='2'/><circle cx='15' cy='100' r='3'/><circle cx='185' cy='140' r='3'/><circle cx='80' cy='190' r='2'/><circle cx='170' cy='20' r='2'/></g></svg>");-webkit-mask-size:200px;mask-size:200px}
+main{position:relative}
+.palm{position:absolute;top:0;right:0;width:130px;pointer-events:none}
+.brand,h1{position:relative}
+.prod{display:flex;gap:16px;align-items:center}
+.art{flex:none;background:var(--tint);border-radius:14px;padding:10px 12px}
+.shop{display:inline-block;margin-top:8px;color:var(--accent);font-weight:600;text-decoration:none;border-bottom:2px solid currentColor}
+.shop:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">ASK <span>Skin Analyser</span></div>
+
+  <section id="start">
+    <h1>Let's find your skin type.</h1>
+    <p class="lead">Answer 10 quick questions about your skin. We'll name your skin type and suggest a cleanser, toner, serum and sunscreen to match.</p>
+    <label for="name">What's your name?</label>
+    <input id="name" type="text" autocomplete="given-name" maxlength="40" placeholder="Your first name">
+    <button class="btn" id="go" disabled>Start the analysis</button>
+  </section>
+
+  <section id="quiz" class="hide">
+    <div class="bar"><i id="fill"></i></div>
+    <div class="count" id="count"></div>
+    <h2 id="q"></h2>
+    <div id="opts"></div>
+    <button class="link" id="back">Back</button>
+  </section>
+
+  <section id="result" class="hide" aria-live="polite">
+    <div class="type" id="rtype"></div>
+    <h1 id="rhead"></h1>
+    <p class="lead" id="rdesc"></p>
+    <p class="mix" id="rmix"></p>
+    <h2 id="rprodhead"></h2>
+    <div id="prods"></div>
+    <button class="btn" id="again">Retake the analysis</button>
+    <p class="note">This is a general guide, not medical advice. If you have persistent breakouts, rashes or pain, see a dermatologist.</p>
+  </section>
+</main>
+
+
+<script>
+// Types: O = oily, D = dry, C = combination, S = sensitive, N = normal
+const Q = [
+ ["How does your face feel an hour after washing it?",[["Tight and a bit flaky","D"],["Comfortable, neither tight nor oily","N"],["Oily in the T-zone, fine elsewhere","C"],["Shiny or greasy all over","O"]]],
+ ["By midday, how does your skin look?",[["Dull or rough","D"],["Fresh, much the same as morning","N"],["Shiny on forehead and nose","C"],["Shiny all over","O"]]],
+ ["How visible are your pores?",[["Barely visible","D"],["Small and even","N"],["Large on nose and cheeks only","C"],["Large and visible across my face","O"]]],
+ ["How often do you get breakouts?",[["Rarely, but I get dry patches","D"],["Rarely","N"],["Now and then, mostly on chin and nose","C"],["Often","O"]]],
+ ["How does your skin react to a new product?",[["It stings or turns red easily","S"],["Usually fine","N"],["Fine, but may get oilier in some areas","C"],["Fine, but may break out","O"]]],
+ ["How does your skin react to sun or wind?",[["It flushes or burns quickly","S"],["Tans or tolerates it well","N"],["Gets oily then irritated in places","C"],["Gets shinier and sweatier","O"]]],
+ ["Do you notice redness, itching or rough patches?",[["Often, and it comes and goes","S"],["Rarely","N"],["Sometimes around the nose or cheeks","C"],["Dry flaking is my main issue","D"]]],
+ ["How does your skin feel in cold or dry weather?",[["Very tight, sometimes cracks","D"],["Fine, I adjust easily","N"],["Dry on cheeks, oily on T-zone","C"],["Still oily","O"]]],
+ ["How do you feel about heavy creams?",[["Love them, my skin drinks them up","D"],["Okay with most textures","N"],["They suit some areas but clog others","C"],["They make me greasy or break out","O"]]],
+ ["How does your skin look without any product?",[["Rough, dull, with fine lines showing","D"],["Balanced and smooth","N"],["Oily centre, dry edges","C"],["Greasy with enlarged pores","O"]]]
+];
+// Products per type (edit these to match your own catalogue)
+const R = {
+ O:{name:"Oily skin",desc:"Your skin makes extra oil, so it tends to look shiny and can clog easily. Aim to cleanse gently and keep everything lightweight.",
+  cleanser:["Minimalist Salicylic + LHA 2% Face Cleanser","Cuts oil and clears pores without stripping."],
+  toner:["Oil-balancing toner (Amazon pick)","Balances oil and helps tighten the look of pores."],
+  serum:["Minimalist Salicylic Acid 2% Serum","Controls shine and calms breakouts."],
+  sunscreen:["The Derma Co 1% Hyaluronic Oil-Free Sunscreen Gel","Light finish that won't feel greasy."]},
+ D:{name:"Dry skin",desc:"Your skin makes less oil, so it can feel tight and look dull. Focus on hydration and a protective barrier.",
+  cleanser:["Minimalist Aquaporin Booster 05% Cleanser","A hydrating 5.5 pH cleanser that cleans gently without drying."],
+  toner:["Minimalist Vitamin B12 + NMF 03% Face Toner","Adds water back right after cleansing."],
+  serum:["Minimalist Hyaluronic Acid 2% Serum","Draws in moisture for hydration, glow and softer fine lines."],
+  sunscreen:["The Derma Co Hydrating Sunscreen SPF 50","Protects and keeps dry skin comfortable."]},
+ C:{name:"Combination skin",desc:"Your T-zone runs oily while your cheeks stay normal or dry. Choose balanced products that work for both zones.",
+  cleanser:["Plum Green Tea Pore Cleansing Face Wash","Clears the T-zone without drying your cheeks."],
+  toner:["Plum 1% Vitamin C Face Toner Spray","Evens out oily and dry areas."],
+  serum:["Lightweight hydrating serum (Amazon pick)","Hydrates without adding shine."],
+  sunscreen:["Dot & Key Watermelon Hyaluronic Cooling Sunscreen SPF 50","Comfortable on both oily and dry areas."]},
+ S:{name:"Sensitive skin",desc:"Your skin reacts quickly to products, sun and weather. Keep routines simple, fragrance-free and soothing.",
+  cleanser:["The Derma Co 2% Niacinamide Gentle Cleanser","Very mild and non-stinging."],
+  toner:["Minimalist PHA 3% Toner","Calms redness and irritation."],
+  serum:["The Derma Co 5% Niacinamide Serum with Alpha Arbutin","Repairs and calms the skin barrier."],
+  sunscreen:["Deconstruct Ceramide Gel Sunscreen SPF 50+","Gentler on reactive skin than chemical filters."]},
+ N:{name:"Normal skin",desc:"Your skin is well balanced, neither too oily nor too dry. Keep it that way with a simple, steady routine.",
+  cleanser:["Watermelon Gel Face Wash","Keeps balance without over-cleansing."],
+  toner:["Hydrating toner (Amazon pick)","Preps skin and adds a light boost of moisture."],
+  serum:["The Derma Co 10% Vitamin C Face Serum","Brightens and protects against daily damage."],
+  sunscreen:["Barrier Repair Sunscreen SPF 50+ PA++++","Daily protection that suits any texture."]}
+};
+const SHOP = "https://your-store.com/"; // replace with your shop URL
+const LINKS = {
+ "D-cleanser":"https://share.google/Hj022AzqCu3IPtm2r",
+ "D-serum":"https://share.google/E9nwwH0GFeOVe2TRb",
+ "D-toner":"https://share.google/pAczK8UumkUZdyr4e",
+ "D-sunscreen":"https://share.google/SaxRFb7Buc1riEhma",
+ "O-cleanser":"https://share.google/2aPFfrMlCoJs1P5VA",
+ "O-serum":"https://share.google/y05ajzUdem559hbqK",
+ "O-toner":"https://amzn.in/d/0aJmUEU0",
+ "O-sunscreen":"https://share.google/CXeBUIbkAOCXXOGym",
+ "C-cleanser":"https://share.google/arIkOF5bcwhDmrkCr",
+ "C-serum":"https://amzn.in/d/09VZYIEa",
+ "C-toner":"https://plumgoodness.com/products/vitamin-c-face-toner-with-mandarin-kakadu-plum",
+ "C-sunscreen":"https://share.google/8EkZZrhfM8CtWac50",
+ "N-cleanser":"https://share.google/XQSPfitMPFKfHrlkY",
+ "N-serum":"https://share.google/kyPDIt6KQpJVuxRfY",
+ "N-toner":"https://amzn.in/d/0i3y6IRT",
+ "N-sunscreen":"https://share.google/tQ52ArsJ1AAqT09Oc",
+ "S-cleanser":"https://share.google/kRYFEN2LICFrdnCM6",
+ "S-serum":"https://share.google/mEoPGwwNpvLXHlPEh",
+ "S-toner":"https://share.google/ZuSOYESiy8uN5Bf9V",
+ "S-sunscreen":"https://share.google/4uwhpBmJQOtOfMDOd"
+}; // optional per-product overrides, e.g. LINKS["O-cleanser"] = "https://..."
+const COL = {cleanser:"#5B7FBF",toner:"#8DAEE3",serum:"#A9C0E8",sunscreen:"#3F5FA3"};
+function art(k){const c=COL[k],d="#1F3560",b={
+ cleanser:`<rect x="22" y="22" width="20" height="50" rx="6" fill="${c}"/><rect x="28" y="10" width="8" height="12" fill="${d}"/><rect x="28" y="8" width="18" height="4" rx="2" fill="${d}"/>`,
+ toner:`<rect x="26" y="8" width="12" height="10" rx="2" fill="${d}"/><path d="M20 26q0-8 12-8t12 8v42q0 6-12 6t-12-6z" fill="${c}"/><circle cx="32" cy="46" r="7" fill="#fff" opacity=".6"/>`,
+ serum:`<ellipse cx="32" cy="10" rx="7" ry="9" fill="${d}"/><rect x="27" y="18" width="10" height="8" fill="${d}"/><rect x="18" y="26" width="28" height="46" rx="8" fill="${c}"/><rect x="24" y="36" width="16" height="16" rx="3" fill="#fff" opacity=".6"/>`,
+ sunscreen:`<path d="M20 12h24l-3 52H23z" fill="${c}"/><rect x="22" y="64" width="20" height="8" rx="2" fill="${d}"/><circle cx="32" cy="36" r="7" fill="#FFF3B0"/>`};
+ return `<svg viewBox="0 0 64 80" width="56" height="70" aria-hidden="true">${b[k]}</svg>`}
+const $ = id => document.getElementById(id);
+let name = "", i = 0, ans = [];
+
+$("name").addEventListener("input", e => { $("go").disabled = !e.target.value.trim(); });
+$("name").addEventListener("keydown", e => { if (e.key === "Enter" && !$("go").disabled) $("go").click(); });
+$("go").onclick = () => { name = $("name").value.trim(); i = 0; ans = []; show("quiz"); render(); };
+$("back").onclick = () => { if (i > 0) { i--; render(); } else show("start"); };
+$("again").onclick = () => { i = 0; ans = []; show("start"); };
+
+function show(id){ ["start","quiz","result"].forEach(s => $(s).classList.toggle("hide", s !== id)); window.scrollTo(0,0); }
+
+function render(){
+  const [q, opts] = Q[i];
+  $("count").textContent = `Question ${i+1} of ${Q.length}`;
+  $("fill").style.width = (i / Q.length * 100) + "%";
+  $("q").textContent = q;
+  $("opts").innerHTML = "";
+  opts.forEach(([text, type]) => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.textContent = text;
+    b.setAttribute("aria-pressed", ans[i] === type && ans[i+"t"] === text);
+    b.onclick = () => { ans[i] = type; ans[i+"t"] = text; i++; i < Q.length ? render() : finish(); };
+    $("opts").appendChild(b);
+  });
+}
+
+function finish(){
+  const tally = {O:0,D:0,C:0,S:0,N:0};
+  for (let k = 0; k < Q.length; k++) tally[ans[k]]++;
+  // Sensitive wins if it scores 3+, otherwise highest score; ties favour combination
+  const order = ["S","C","O","D","N"];
+  let best = order.reduce((a,b) => tally[b] > tally[a] ? b : a);
+  if (tally.S < 3 && best === "S") best = order.filter(t => t !== "S").reduce((a,b) => tally[b] > tally[a] ? b : a);
+  const r = R[best];
+  const parts = Object.entries(tally).filter(([,v]) => v).sort((a,b) => b[1]-a[1])
+    .map(([t,v]) => `${R[t].name.replace(" skin","")}: ${v}`).join(" · ");
+  $("rtype").textContent = r.name;
+  $("rhead").textContent = `${name}, you have ${r.name.toLowerCase()}.`;
+  $("rdesc").textContent = r.desc;
+  $("rmix").textContent = "Your answers: " + parts;
+  $("rprodhead").textContent = "Your routine";
+  $("prods").innerHTML = [["Cleanser","cleanser"],["Toner","toner"],["Serum","serum"],["Sunscreen","sunscreen"]]
+    .map(([label,key]) => `<div class="prod"><div class="art">${art(key)}</div><div><h3>${label}</h3><div class="k">${r[key][0]}</div><p>${r[key][1]}</p><a class="shop" href="${LINKS[best+"-"+key]||SHOP+key+"-"+best.toLowerCase()}" target="_blank" rel="noopener">Shop this ${label.toLowerCase()}</a></div></div>`).join("");
+  show("result");
+}
+</script>
+</body>
+</html>
